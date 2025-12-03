@@ -31,6 +31,43 @@ app.post('/', (req, res) => {
   res.status(200).end();
 });
 
+app.post("/api/v3/meta-whatsapp-callback", (req, res) => {
+  const payload = req.body;
+  handleWebhook(payload);
+  return res.sendStatus(200);
+});
+function handleWebhook(payload) {
+  const entries = payload.entry || [];
+
+  for (const entry of entries) {
+    const changes = entry.changes || [];
+
+    for (const change of changes) {
+      const value = change.value || {};
+
+      if (value.messages) {
+        processIncomingMessages(value.messages);
+      }
+
+      if (value.statuses) {
+        processStatusUpdates(value.statuses);
+      }
+    }
+  }
+} 
+
+function processIncomingMessages(messages) {
+  for (const message of messages) {
+    console.log(message);
+  }
+}
+
+function processStatusUpdates(statuses) {
+  for (const status of statuses) {
+    console.log(status);
+  }
+}
+
 // Start the server
 app.listen(port, () => {
   console.log(`\nListening on port ${port}\n`);
