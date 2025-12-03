@@ -31,6 +31,21 @@ app.post('/', (req, res) => {
   res.status(200).end();
 });
 
+app.get('/api/v3/meta-whatsapp-callback', (req, res) => {
+  const mode = req.query['hub.mode'];
+  const challenge = req.query['hub.challenge'];
+  const token = req.query['hub.verify_token'];
+
+  console.log('GET verification attempt:', req.query);
+
+  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    console.log('WEBHOOK VERIFIED at /api/v3/meta-whatsapp-callback');
+    return res.status(200).send(challenge); // plain text
+  } else {
+    console.warn('Webhook verification failed:', { mode, token });
+    return res.sendStatus(403);
+  }
+});
 app.post("/api/v3/meta-whatsapp-callback", (req, res) => {
   const payload = req.body;
   handleWebhook(payload);
