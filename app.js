@@ -38,7 +38,7 @@ app.get('/api/v3/meta-whatsapp-callback', (req, res) => {
 
   console.log('GET verification attempt:', req.query);
 
-  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+  if (mode === 'subscribe' && token === verifyToken) {
     console.log('WEBHOOK VERIFIED at /api/v3/meta-whatsapp-callback');
     return res.status(200).send(challenge); // plain text
   } else {
