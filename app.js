@@ -74,12 +74,25 @@ function handleWebhook(payload) {
 function processIncomingMessages(messages) {
   for (const message of messages) {
     console.log(message);
+    console.info(`Incoming message from ${message.from}: ${message.text}`);
+    if (message.type === 'text') {
+      console.info(`Incoming message from ${message.from}: ${message.text}`);
+    } else if (message.type === 'image') {
+      console.info(`Incoming message from ${message.from}: ${message.image}`);
+    } else if (message.type === 'video') {
+      console.info(`Incoming message from ${message.from}: ${message.video}`);
+    } else if (message.type === 'audio') {
+      console.info(`Incoming message from ${message.from}: ${message.audio}`);
+    }
   }
 }
 
 function processStatusUpdates(statuses) {
   for (const status of statuses) {
-    console.log(status);
+    const statusId = status.id;
+    const statusType = status.status;
+
+    console.info(`Status updated for ${statusId}: ${statusType}`);
   }
 }
 
